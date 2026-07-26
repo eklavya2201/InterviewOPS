@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>InterviewOps | Start Mock Interview</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Fraunces:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Tailwind Configuration -->
 <script id="tailwind-config">
@@ -16,51 +16,51 @@
             "colors": {
                 "on-tertiary-fixed": "#4a2b00",
                 "on-error-container": "#7f1d1d",
-                "surface-container": "#edf3ee",
-                "surface-container-high": "#e7ede8",
+                "surface-container": "#f1ece3",
+                "surface-container-high": "#ebe5da",
                 "tertiary-fixed-dim": "#b45309",
                 "tertiary-fixed": "#ffddb7",
                 "tertiary-container": "#d97706",
                 "on-primary": "#ffffff",
-                "outline": "#6c7a71",
-                "secondary-fixed": "#cde9dc",
+                "outline": "#78716c",
+                "secondary-fixed": "#ede9fe",
                 "surface-container-lowest": "#ffffff",
-                "surface-variant": "#dfe8e1",
+                "surface-variant": "#e9e1d5",
                 "on-tertiary-container": "#78350f",
-                "background": "#f6faf7",
-                "on-surface-variant": "#44514a",
-                "surface-container-low": "#f1f6f2",
+                "background": "#faf7f2",
+                "on-surface-variant": "#57534e",
+                "surface-container-low": "#f5f1e8",
                 "on-error": "#ffffff",
-                "surface": "#f6faf7",
-                "primary-container": "#10b981",
-                "primary": "#059669",
-                "inverse-on-surface": "#eef2ee",
+                "surface": "#faf7f2",
+                "primary-container": "#6366f1",
+                "primary": "#4338ca",
+                "inverse-on-surface": "#f5f1ea",
                 "on-secondary": "#ffffff",
-                "on-primary-fixed-variant": "#047857",
+                "on-primary-fixed-variant": "#3730a3",
                 "tertiary": "#92400e",
-                "secondary-fixed-dim": "#b1ccc0",
-                "on-background": "#18211b",
-                "on-surface": "#18211b",
+                "secondary-fixed-dim": "#c4b5fd",
+                "on-background": "#1c1917",
+                "on-surface": "#1c1917",
                 "error-container": "#dc2626",
                 "on-tertiary-fixed-variant": "#92400e",
-                "surface-tint": "#059669",
-                "surface-container-highest": "#e1e8e2",
-                "inverse-primary": "#6ee7b7",
-                "on-secondary-fixed-variant": "#33534a",
-                "secondary-container": "#cde9dc",
-                "on-secondary-container": "#1f4437",
-                "inverse-surface": "#2b322e",
+                "surface-tint": "#4338ca",
+                "surface-container-highest": "#e5ded2",
+                "inverse-primary": "#a5b4fc",
+                "on-secondary-fixed-variant": "#5b21b6",
+                "secondary-container": "#ede9fe",
+                "on-secondary-container": "#5b21b6",
+                "inverse-surface": "#292524",
                 "surface-bright": "#ffffff",
                 "on-primary-container": "#ffffff",
-                "on-secondary-fixed": "#06201a",
-                "primary-fixed": "#a7f3d0",
-                "on-primary-fixed": "#064e3b",
-                "surface-dim": "#e8eee9",
-                "primary-fixed-dim": "#059669",
+                "on-secondary-fixed": "#2e1065",
+                "primary-fixed": "#c7d2fe",
+                "on-primary-fixed": "#312e81",
+                "surface-dim": "#eae4d9",
+                "primary-fixed-dim": "#4338ca",
                 "error": "#dc2626",
-                "secondary": "#3e5c50",
+                "secondary": "#7c3aed",
                 "on-tertiary": "#ffffff",
-                "outline-variant": "#d3dcd5"
+                "outline-variant": "#ddd5c9"
             },
             "borderRadius": {
                 "DEFAULT": "0.25rem",
@@ -82,12 +82,12 @@
             "fontFamily": {
                 "body-md": ["Inter"],
                 "body-lg": ["Inter"],
-                "headline-lg": ["Space Grotesk"],
-                "label-sm": ["JetBrains Mono"],
-                "headline-md": ["Space Grotesk"],
-                "display-lg": ["Space Grotesk"],
-                "headline-sm": ["Space Grotesk"],
-                "label-md": ["JetBrains Mono"],
+                "headline-lg": ["Fraunces"],
+                "label-sm": ["IBM Plex Mono"],
+                "headline-md": ["Fraunces"],
+                "display-lg": ["Fraunces"],
+                "headline-sm": ["Fraunces"],
+                "label-md": ["IBM Plex Mono"],
                 "body-sm": ["Inter"]
             },
             "fontSize": {
@@ -107,8 +107,8 @@
     </script>
 <style>
         body {
-            background-color: #f6faf7;
-            color: #18211b;
+            background-color: #faf7f2;
+            color: #1c1917;
         }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -117,21 +117,29 @@
             width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f6f2;
+            background: #f5f1e8;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #d3dcd5;
+            background: #ddd5c9;
             border-radius: 10px;
         }
         .segmented-control-active {
-            background-color: #059669;
+            background-color: #4338ca;
             color: #ffffff;
         }
         input:checked + .role-pill {
-            border-color: #059669;
-            background-color: rgba(5, 150, 105, 0.08);
+            border-color: #4338ca;
+            background-color: rgba(67, 56, 202, 0.08);
         }
-    </style>
+    
+    /* --- dynamics --- */
+    @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    main > * { animation: riseIn .45s ease both; }
+    main > *:nth-child(2) { animation-delay: .07s; }
+    main > *:nth-child(3) { animation-delay: .14s; }
+    main > *:nth-child(4) { animation-delay: .21s; }
+    main > *:nth-child(5) { animation-delay: .28s; }
+</style>
 </head>
 <body class="font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- TopNavBar (Shared Component) -->
@@ -155,7 +163,7 @@
 <div class="absolute top-1/4 -right-20 w-96 h-96 bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
 <div class="absolute bottom-1/4 -left-20 w-96 h-96 bg-secondary/10 blur-[120px] rounded-full pointer-events-none"></div>
 <!-- Setup Card -->
-<div class="w-full max-w-2xl bg-white border border-[#e3eae4] rounded-xl p-xl shadow-xl shadow-emerald-950/5 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+<div class="w-full max-w-2xl bg-white border border-[#e7e0d6] rounded-xl p-xl shadow-xl shadow-indigo-950/5 relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
 <!-- Title -->
 <div class="mb-xl">
 <h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Start your mock interview</h1>
@@ -168,29 +176,29 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
 <label class="relative cursor-pointer">
 <input checked="" class="peer sr-only" name="role" type="radio"/>
-<div class="role-pill flex items-center gap-md p-md border border-[#e3eae4] rounded-lg bg-[#f6faf8] transition-all hover:border-[#059669]/50 peer-checked:border-[#059669] peer-checked:bg-[#059669]/5">
-<span class="material-symbols-outlined text-[#059669]" data-icon="robot_2">robot_2</span>
+<div class="role-pill flex items-center gap-md p-md border border-[#e7e0d6] rounded-lg bg-[#f7f3ec] transition-all hover:border-[#4338ca]/50 peer-checked:border-[#4338ca] peer-checked:bg-[#4338ca]/5">
+<span class="material-symbols-outlined text-[#4338ca]" data-icon="robot_2">robot_2</span>
 <span class="font-body-md text-body-md">AI Engineer</span>
 </div>
 </label>
 <label class="relative cursor-pointer">
 <input class="peer sr-only" name="role" type="radio"/>
-<div class="role-pill flex items-center gap-md p-md border border-[#e3eae4] rounded-lg bg-[#f6faf8] transition-all hover:border-[#059669]/50 peer-checked:border-[#059669] peer-checked:bg-[#059669]/5">
-<span class="material-symbols-outlined text-[#059669]" data-icon="neurology">neurology</span>
+<div class="role-pill flex items-center gap-md p-md border border-[#e7e0d6] rounded-lg bg-[#f7f3ec] transition-all hover:border-[#4338ca]/50 peer-checked:border-[#4338ca] peer-checked:bg-[#4338ca]/5">
+<span class="material-symbols-outlined text-[#4338ca]" data-icon="neurology">neurology</span>
 <span class="font-body-md text-body-md">ML Engineer</span>
 </div>
 </label>
 <label class="relative cursor-pointer">
 <input class="peer sr-only" name="role" type="radio"/>
-<div class="role-pill flex items-center gap-md p-md border border-[#e3eae4] rounded-lg bg-[#f6faf8] transition-all hover:border-[#059669]/50 peer-checked:border-[#059669] peer-checked:bg-[#059669]/5">
-<span class="material-symbols-outlined text-[#059669]" data-icon="database">database</span>
+<div class="role-pill flex items-center gap-md p-md border border-[#e7e0d6] rounded-lg bg-[#f7f3ec] transition-all hover:border-[#4338ca]/50 peer-checked:border-[#4338ca] peer-checked:bg-[#4338ca]/5">
+<span class="material-symbols-outlined text-[#4338ca]" data-icon="database">database</span>
 <span class="font-body-md text-body-md">Data Scientist</span>
 </div>
 </label>
 <label class="relative cursor-pointer">
 <input class="peer sr-only" name="role" type="radio"/>
-<div class="role-pill flex items-center gap-md p-md border border-[#e3eae4] rounded-lg bg-[#f6faf8] transition-all hover:border-[#059669]/50 peer-checked:border-[#059669] peer-checked:bg-[#059669]/5">
-<span class="material-symbols-outlined text-[#059669]" data-icon="query_stats">query_stats</span>
+<div class="role-pill flex items-center gap-md p-md border border-[#e7e0d6] rounded-lg bg-[#f7f3ec] transition-all hover:border-[#4338ca]/50 peer-checked:border-[#4338ca] peer-checked:bg-[#4338ca]/5">
+<span class="material-symbols-outlined text-[#4338ca]" data-icon="query_stats">query_stats</span>
 <span class="font-body-md text-body-md">Data Analyst</span>
 </div>
 </label>
@@ -199,7 +207,7 @@
 <!-- Difficulty Segmented Control -->
 <div class="space-y-md">
 <label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Experience Level</label>
-<div class="flex bg-[#f6faf8] border border-[#e3eae4] rounded-lg p-1 w-full overflow-hidden">
+<div class="flex bg-[#f7f3ec] border border-[#e7e0d6] rounded-lg p-1 w-full overflow-hidden">
 <button class="flex-1 py-2 text-center rounded-md font-label-md text-label-md transition-all segmented-control-active" type="button">Intern</button>
 <button class="flex-1 py-2 text-center rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" type="button">Fresher</button>
 <button class="flex-1 py-2 text-center rounded-md font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" type="button">Mid-level</button>
@@ -211,11 +219,11 @@
 <label class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Resume Context</label>
 <span class="font-label-sm text-label-sm text-outline">(Optional)</span>
 </div>
-<textarea class="w-full h-32 bg-[#f6faf8] border border-[#e3eae4] rounded-lg p-md font-body-sm text-body-sm focus:border-[#059669] focus:ring-1 focus:ring-[#059669] outline-none transition-all placeholder:text-outline custom-scrollbar resize-none" placeholder="Paste your resume or job description here for personalized questions..."></textarea>
+<textarea class="w-full h-32 bg-[#f7f3ec] border border-[#e7e0d6] rounded-lg p-md font-body-sm text-body-sm focus:border-[#4338ca] focus:ring-1 focus:ring-[#4338ca] outline-none transition-all placeholder:text-outline custom-scrollbar resize-none" placeholder="Paste your resume or job description here for personalized questions..."></textarea>
 </div>
 <!-- CTA -->
 <div class="pt-4">
-<button class="w-full py-4 bg-[#059669] text-white font-headline-sm text-headline-sm rounded-lg font-bold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_8px_24px_rgba(5,150,105,0.25)]" id="begin-btn">
+<button class="w-full py-4 bg-[#4338ca] text-white font-headline-sm text-headline-sm rounded-lg font-bold hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_8px_24px_rgba(67,56,202,0.25)]" id="begin-btn">
                         Begin interview
                     </button>
 </div>
