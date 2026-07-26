@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InterviewOps | Active Interview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-tertiary-fixed": "#4a2b00",
+                "on-error-container": "#7f1d1d",
+                "surface-container": "#edf3ee",
+                "surface-container-high": "#e7ede8",
+                "tertiary-fixed-dim": "#b45309",
+                "tertiary-fixed": "#ffddb7",
+                "tertiary-container": "#d97706",
+                "on-primary": "#ffffff",
+                "outline": "#6c7a71",
+                "secondary-fixed": "#cde9dc",
+                "surface-container-lowest": "#ffffff",
+                "surface-variant": "#dfe8e1",
+                "on-tertiary-container": "#78350f",
+                "background": "#f6faf7",
+                "on-surface-variant": "#44514a",
+                "surface-container-low": "#f1f6f2",
+                "on-error": "#ffffff",
+                "surface": "#f6faf7",
+                "primary-container": "#10b981",
+                "primary": "#059669",
+                "inverse-on-surface": "#eef2ee",
+                "on-secondary": "#ffffff",
+                "on-primary-fixed-variant": "#047857",
+                "tertiary": "#92400e",
+                "secondary-fixed-dim": "#b1ccc0",
+                "on-background": "#18211b",
+                "on-surface": "#18211b",
+                "error-container": "#dc2626",
+                "on-tertiary-fixed-variant": "#92400e",
+                "surface-tint": "#059669",
+                "surface-container-highest": "#e1e8e2",
+                "inverse-primary": "#6ee7b7",
+                "on-secondary-fixed-variant": "#33534a",
+                "secondary-container": "#cde9dc",
+                "on-secondary-container": "#1f4437",
+                "inverse-surface": "#2b322e",
+                "surface-bright": "#ffffff",
+                "on-primary-container": "#ffffff",
+                "on-secondary-fixed": "#06201a",
+                "primary-fixed": "#a7f3d0",
+                "on-primary-fixed": "#064e3b",
+                "surface-dim": "#e8eee9",
+                "primary-fixed-dim": "#059669",
+                "error": "#dc2626",
+                "secondary": "#3e5c50",
+                "on-tertiary": "#ffffff",
+                "outline-variant": "#d3dcd5"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "lg": "24px",
+                "sm": "8px",
+                "unit": "4px",
+                "md": "16px",
+                "xl": "32px",
+                "xs": "4px",
+                "max_width": "1440px",
+                "margin": "24px"
+            },
+            "fontFamily": {
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-lg": ["Space Grotesk"],
+                "label-sm": ["JetBrains Mono"],
+                "headline-md": ["Space Grotesk"],
+                "display-lg": ["Space Grotesk"],
+                "headline-sm": ["Space Grotesk"],
+                "label-md": ["JetBrains Mono"],
+                "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+        .shimmer-bg {
+            background: linear-gradient(90deg, transparent 0%, rgba(5, 150, 105, 0.06) 50%, transparent 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.35); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(5, 150, 105, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); }
+        }
+        .pulse-animation {
+            animation: pulse-ring 2s infinite;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid #e3eae4;
+        }
+        body {
+            background-color: #f6faf7;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-on-surface font-body-md overflow-x-hidden selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/40">
+<div class="max-w-max_width mx-auto flex justify-between items-center px-lg py-md">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">InterviewOps</span>
+</div>
+<div class="hidden md:flex items-center gap-xl">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">History</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">About</a>
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-variant/60 text-primary cursor-pointer transition-all active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+</div>
+<!-- Mobile Toggle -->
+<div class="md:hidden flex items-center">
+<span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="pt-24 pb-48 px-md flex flex-col items-center">
+<div class="w-full max-w-[720px]">
+<!-- Progress Section -->
+<header class="mb-xl">
+<div class="flex justify-between items-end mb-sm">
+<span class="font-label-md text-label-md text-primary uppercase tracking-wider">Question 3 of 6</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">50% Completed</span>
+</div>
+<div class="flex gap-1 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-1/6 bg-primary-container rounded-full"></div>
+<div class="h-full w-1/6 bg-primary-container rounded-full"></div>
+<div class="h-full w-1/6 bg-primary-container rounded-full"></div>
+<div class="h-full w-1/6 bg-surface-variant rounded-full"></div>
+<div class="h-full w-1/6 bg-surface-variant rounded-full"></div>
+<div class="h-full w-1/6 bg-surface-variant rounded-full"></div>
+</div>
+</header>
+<!-- Chat Container -->
+<div class="space-y-lg">
+<!-- Message 1: System/Interviewer -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant/60">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Interviewer</span>
+</div>
+<div class="glass-panel p-lg rounded-xl max-w-[90%] self-start shadow-sm">
+<p class="font-body-md text-body-md text-on-surface">
+                            Great response regarding concurrency patterns. Now, let's pivot to systems design. How would you handle state synchronization in a globally distributed real-time collaborative editor like Google Docs?
+                        </p>
+</div>
+</div>
+<!-- Message 2: User -->
+<div class="flex flex-col gap-sm items-end">
+<div class="flex items-center gap-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">You</span>
+<div class="w-8 h-8 rounded-lg bg-primary-fixed/40 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="person">person</span>
+</div>
+</div>
+<div class="bg-secondary-container/40 border border-secondary-container p-lg rounded-xl max-w-[90%] self-end">
+<p class="font-body-md text-body-md text-on-secondary-container">
+                            I would primarily look into Operational Transformation (OT) or Conflict-free Replicated Data Types (CRDTs). OT is more centralized, requiring a server to order operations, while CRDTs allow for more peer-to-peer or decentralized synchronization by ensuring operations are commutative.
+                        </p>
+</div>
+</div>
+<!-- Message 3: Thinking State -->
+<div class="flex flex-col gap-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant/60">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Interviewer</span>
+</div>
+<div class="glass-panel p-lg rounded-xl max-w-[90%] self-start shimmer-bg relative overflow-hidden">
+<div class="flex items-center gap-md">
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+<div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+<div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant italic">Interviewer is thinking...</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Composer Shell -->
+<section class="fixed bottom-0 left-0 w-full z-40 bg-background/70 backdrop-blur-xl border-t border-outline-variant/40">
+<div class="max-w-[720px] mx-auto px-md py-lg">
+<div class="flex flex-col gap-md">
+<div class="relative group">
+<textarea class="w-full min-h-[120px] bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-lg font-body-md text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:border-primary transition-all resize-none shadow-sm" placeholder="Type your technical response here..."></textarea>
+<!-- Code/Format Actions Floating -->
+<div class="absolute top-md right-md flex gap-sm">
+<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center hover:bg-surface-variant transition-colors border border-outline-variant/40">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="code">code</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-md">
+<button class="relative w-12 h-12 flex items-center justify-center bg-surface-container rounded-full border border-outline-variant/60 text-on-surface-variant hover:text-primary transition-all group" id="mic-btn">
+<div class="absolute inset-0 rounded-full bg-primary/10 pulse-animation"></div>
+<span class="material-symbols-outlined relative" data-icon="mic">mic</span>
+</button>
+<span class="hidden sm:block font-label-sm text-label-sm text-on-surface-variant/70">Hold to speak answer</span>
+</div>
+<div class="flex items-center gap-md">
+<button class="px-lg py-md bg-transparent border border-outline-variant/60 text-on-surface-variant rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-all">
+                            Save Draft
+                        </button>
+<button class="px-xl py-md bg-primary text-on-primary rounded-lg font-label-md text-label-md font-bold hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/20">
+                            Submit answer
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer (Shared Component) -->
+<footer class="mt-auto w-full py-lg px-xl flex flex-col md:flex-row justify-between items-center gap-md bg-background border-t border-outline-variant/40">
+<div class="flex flex-col md:flex-row items-center gap-md">
+<span class="font-label-md text-label-md font-bold text-on-surface">InterviewOps</span>
+<span class="font-body-sm text-body-sm text-secondary opacity-70">© 2024 InterviewOps. Technical Minimalism for AI Talent.</span>
+</div>
+<div class="flex gap-xl">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for textarea focus
+        const textarea = document.querySelector('textarea');
+        textarea.addEventListener('focus', () => {
+            textarea.closest('.relative').classList.add('shadow-[0_0_20px_rgba(5,150,105,0.08)]');
+        });
+        textarea.addEventListener('blur', () => {
+            textarea.closest('.relative').classList.remove('shadow-[0_0_20px_rgba(5,150,105,0.08)]');
+        });
+
+        // Mock pulse state toggle for mic
+        const micButton = document.getElementById('mic-btn');
+        const micRing = micButton.querySelector('.pulse-animation');
+        let isRecording = false;
+        micButton.addEventListener('click', () => {
+            isRecording = !isRecording;
+            if (isRecording) {
+                micRing.style.animationDuration = '1s';
+                micButton.classList.add('text-primary');
+            } else {
+                micRing.style.animationDuration = '2s';
+                micButton.classList.remove('text-primary');
+            }
+        });
+    </script>
+</body></html>
