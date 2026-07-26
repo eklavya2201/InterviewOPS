@@ -141,8 +141,8 @@
 <span class="font-headline-md text-headline-md font-bold text-primary">InterviewOps</span>
 </div>
 <nav class="hidden md:flex items-center gap-xl">
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">History</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">About</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="history.html">History</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="https://github.com/eklavya2201/interviewops">About</a>
 <div class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-variant/60 cursor-pointer hover:bg-surface-variant transition-all">
 <span class="material-symbols-outlined text-on-surface-variant" data-icon="person">person</span>
 </div>
@@ -237,6 +237,8 @@
 <script>
         // Segmented control interaction logic
         const buttons = document.querySelectorAll('.flex-1.py-2');
+        const diffMap = { 'Intern': 'intern', 'Fresher': 'fresher', 'Mid-level': 'mid' };
+        let difficulty = 'intern';
         buttons.forEach(btn => {
             btn.addEventListener('click', () => {
                 buttons.forEach(b => {
@@ -245,12 +247,65 @@
                 });
                 btn.classList.add('segmented-control-active');
                 btn.classList.remove('text-on-surface-variant');
+                difficulty = diffMap[btn.textContent.trim()] || 'intern';
             });
         });
 
-        // Simple button active state micro-interaction
+        // Start a session against the backend, then hand off to the interview screen
+        const ROLES = ['ai-engineer', 'ml-engineer', 'data-scientist', 'data-analyst'];
         const mainBtn = document.getElementById('begin-btn');
         mainBtn.addEventListener('mousedown', () => mainBtn.style.transform = 'scale(0.98)');
         mainBtn.addEventListener('mouseup', () => mainBtn.style.transform = 'scale(1)');
+
+        mainBtn.addEventListener('click', async () => {
+            const idx = [...document.querySelectorAll('input[name="role"]')].findIndex(r => r.checked);
+            const resume = document.querySelector('textarea').value.trim();
+            mainBtn.disabled = true;
+            mainBtn.textContent = 'Starting interview…';
+            try {
+                const res = await fetch('/api/session/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        role: ROLES[idx] || 'ai-engineer',
+                        difficulty,
+                        candidate_name: 'Candidate',
+                        resume_summary: resume || null,
+                    }),
+                });
+                if (!res.ok) throw new Error((await res.json()).detail || 'HTTP ' + res.status);
+                const data = await res.json();
+                sessionStorage.setItem('io_session', JSON.stringify({
+                    id: data.session_id,
+                    role: ROLES[idx] || 'ai-engineer',
+                    difficulty,
+                    opening: data.opening_question,
+                    qnum: 1,
+                    startedAt: Date.now(),
+                }));
+                location.href = 'interview.html';
+            } catch (err) {
+                mainBtn.disabled = false;
+                mainBtn.textContent = 'Begin interview';
+                let el = document.getElementById('start-error');
+                if (!el) {
+                    el = document.createElement('p');
+                    el.id = 'start-error';
+                    el.className = 'text-center font-body-sm text-body-sm text-error mt-2';
+                    mainBtn.parentElement.appendChild(el);
+                }
+                el.textContent = 'Could not start interview: ' + err.message + ' — is the backend running?';
+            }
+        });
+
+        // Show a demo-mode banner when the backend has no API key
+        fetch('/api/health').then(r => r.json()).then(h => {
+            if (h.mock) {
+                const note = document.createElement('div');
+                note.className = 'text-center font-label-sm text-label-sm text-tertiary-fixed-dim bg-tertiary-fixed/30 border border-tertiary-fixed rounded-lg py-2 px-md mb-4';
+                note.textContent = 'Demo mode — set ANTHROPIC_API_KEY on the backend for real AI interviews.';
+                document.querySelector('form').prepend(note);
+            }
+        }).catch(() => {});
     </script>
 </body></html>
