@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: interviewops
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.6
+      # ANTHROPIC_API_KEY is intentionally NOT set here.
+      # Without it the app runs in free demo mode (mock questions, zero API cost).
+      # Add it in the Render dashboard only when showcasing real AI interviews.
