@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InterviewOps | History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+        }
+        .code-grid {
+            background-image: radial-gradient(#dce4dd 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#4a2b00",
+                        "on-error-container": "#7f1d1d",
+                        "surface-container": "#edf3ee",
+                        "surface-container-high": "#e7ede8",
+                        "tertiary-fixed-dim": "#b45309",
+                        "tertiary-fixed": "#ffddb7",
+                        "tertiary-container": "#d97706",
+                        "on-primary": "#ffffff",
+                        "outline": "#6c7a71",
+                        "secondary-fixed": "#cde9dc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#dfe8e1",
+                        "on-tertiary-container": "#78350f",
+                        "background": "#f6faf7",
+                        "on-surface-variant": "#44514a",
+                        "surface-container-low": "#f1f6f2",
+                        "on-error": "#ffffff",
+                        "surface": "#f6faf7",
+                        "primary-container": "#10b981",
+                        "primary": "#059669",
+                        "inverse-on-surface": "#eef2ee",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed-variant": "#047857",
+                        "tertiary": "#92400e",
+                        "secondary-fixed-dim": "#b1ccc0",
+                        "on-background": "#18211b",
+                        "on-surface": "#18211b",
+                        "error-container": "#dc2626",
+                        "on-tertiary-fixed-variant": "#92400e",
+                        "surface-tint": "#059669",
+                        "surface-container-highest": "#e1e8e2",
+                        "inverse-primary": "#6ee7b7",
+                        "on-secondary-fixed-variant": "#33534a",
+                        "secondary-container": "#cde9dc",
+                        "on-secondary-container": "#1f4437",
+                        "inverse-surface": "#2b322e",
+                        "surface-bright": "#ffffff",
+                        "on-primary-container": "#ffffff",
+                        "on-secondary-fixed": "#06201a",
+                        "primary-fixed": "#a7f3d0",
+                        "on-primary-fixed": "#064e3b",
+                        "surface-dim": "#e8eee9",
+                        "primary-fixed-dim": "#059669",
+                        "error": "#dc2626",
+                        "secondary": "#3e5c50",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#d3dcd5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "unit": "4px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "xs": "4px",
+                        "max_width": "1440px",
+                        "margin": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Space Grotesk"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "headline-sm": ["Space Grotesk"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg py-md max-w-max_width mx-auto bg-surface/80 backdrop-blur-md border-b border-outline-variant/40">
+<div class="flex items-center gap-xl">
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight">InterviewOps</h1>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary py-xs transition-all" href="#">History</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">About</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-sm text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+</div>
+</header>
+<div class="flex pt-20 h-screen">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-full w-64 bg-surface-container-low border-r border-outline-variant/40 p-md gap-md sticky top-20">
+<div class="flex items-center gap-sm px-sm py-md mb-md">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="terminal">terminal</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold text-on-surface">Developer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">AI/ML Track</span>
+</div>
+</div>
+<nav class="flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant/60 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md">New Interview</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm bg-primary text-on-primary rounded-lg font-bold transition-all scale-98" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant/60 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md">Feedback</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant/60 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-md rounded-xl bg-surface-variant/50 border border-outline-variant/40">
+<h4 class="font-label-md text-label-md font-bold mb-xs">Pro Status</h4>
+<div class="w-full h-1 bg-outline-variant/60 rounded-full mb-sm">
+<div class="w-3/4 h-full bg-primary rounded-full"></div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">24/30 interviews left</p>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto hide-scrollbar bg-background code-grid p-gutter lg:p-xl">
+<div class="max-w-5xl mx-auto space-y-xl">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Interview History</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Review your past performance and growth metrics.</p>
+</div>
+<div class="flex gap-sm">
+<div class="flex bg-white rounded-lg p-unit border border-outline-variant/60">
+<button class="px-md py-xs bg-primary text-on-primary font-label-md text-label-md rounded-md transition-all">All</button>
+<button class="px-md py-xs text-on-surface-variant font-label-md text-label-md hover:text-on-surface transition-all">Passed</button>
+</div>
+</div>
+</div>
+<!-- History Table Container -->
+<div class="bg-white rounded-xl border border-outline-variant/60 overflow-hidden shadow-lg shadow-emerald-950/5" id="history-container">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant/40">
+<tr>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Date</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Role</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Difficulty</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Score</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Hire Signal</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md font-label-md text-label-md text-on-surface">Oct 24, 2023</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-on-surface">Senior Backend Engineer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Go, distributed-systems</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-unit rounded-full bg-error/10 text-error font-label-sm text-label-sm border border-error/20">Hard</span>
+</td>
+<td class="px-lg py-md">
+<div class="relative w-10 h-10 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/40" cx="20" cy="20" fill="transparent" r="18" stroke="currentColor" stroke-width="3"></circle>
+<circle class="text-primary" cx="20" cy="20" fill="transparent" r="18" stroke="currentColor" stroke-dasharray="113" stroke-dashoffset="18" stroke-width="3"></circle>
+</svg>
+<span class="font-label-sm text-label-sm font-bold">84</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-md text-label-md text-primary">Strong Hire</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<a class="text-primary font-label-md text-label-md hover:underline inline-flex items-center gap-xs" href="#">
+                                            View report
+                                            <span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</a>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md font-label-md text-label-md text-on-surface">Oct 18, 2023</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-on-surface">Fullstack Developer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">React, Node.js</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-unit rounded-full bg-primary/10 text-primary font-label-sm text-label-sm border border-primary/20">Medium</span>
+</td>
+<td class="px-lg py-md">
+<div class="relative w-10 h-10 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/40" cx="20" cy="20" fill="transparent" r="18" stroke="currentColor" stroke-width="3"></circle>
+<circle class="text-primary" cx="20" cy="20" fill="transparent" r="18" stroke="currentColor" stroke-dasharray="113" stroke-dashoffset="34" stroke-width="3"></circle>
+</svg>
+<span class="font-label-sm text-label-sm font-bold">70</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-md text-label-md text-secondary">Hire</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<a class="text-primary font-label-md text-label-md hover:underline inline-flex items-center gap-xs" href="#">
+                                            View report
+                                            <span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</a>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md font-label-md text-label-md text-on-surface">Oct 12, 2023</td>
+<td class="px-lg py-md">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-medium text-on-surface">ML Platform Engineer</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Kubernetes, Python</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-unit rounded-full bg-error/10 text-error font-label-sm text-label-sm border border-error/20">Hard</span>
+</td>
+<td class="px-lg py-md">
+<div class="relative w-10 h-10 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant/40" cx="20" cy="20" fill="transparent" r="18" stroke="currentColor" stroke-width="3"></circle>
+<circle class="text-tertiary-fixed-dim" cx="20" cy="20" fill="transparent" r="18" stroke="currentColor" stroke-dasharray="113" stroke-dashoffset="65" stroke-width="3"></circle>
+</svg>
+<span class="font-label-sm text-label-sm font-bold">42</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-md text-label-md text-error">No Hire</span>
+</div>
+</td>
+<td class="px-lg py-md">
+<a class="text-primary font-label-md text-label-md hover:underline inline-flex items-center gap-xs" href="#">
+                                            View report
+                                            <span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Empty State (Hidden by default, shown via JS if table is cleared) -->
+<div class="hidden flex-col items-center justify-center py-24 px-lg text-center bg-white rounded-xl border border-dashed border-outline-variant/70" id="empty-state">
+<div class="relative mb-lg">
+<div class="w-32 h-32 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-primary/50" data-icon="analytics" style="font-variation-settings: 'wght' 200;">analytics</span>
+</div>
+<div class="absolute -bottom-2 -right-2 w-12 h-12 bg-white border border-outline-variant/60 rounded-lg flex items-center justify-center animate-bounce">
+<span class="material-symbols-outlined text-primary" data-icon="keyboard">keyboard</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">No interviews yet — start your first one</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-xl">
+                        Your performance data and technical analysis will appear here once you complete your first AI-driven mock interview.
+                    </p>
+<button class="px-xl py-md bg-primary text-on-primary font-label-md text-label-md rounded-lg font-bold hover:opacity-90 transition-all flex items-center gap-md shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                        Launch New Interview
+                    </button>
+</div>
+<!-- Summary Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="p-lg bg-white rounded-xl border border-outline-variant/60 flex items-center gap-lg shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Average Score</span>
+<div class="font-headline-md text-headline-md text-primary">76.4%</div>
+</div>
+</div>
+<div class="p-lg bg-white rounded-xl border border-outline-variant/60 flex items-center gap-lg shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="timer">timer</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Time</span>
+<div class="font-headline-md text-headline-md text-secondary">12.5 hrs</div>
+</div>
+</div>
+<div class="p-lg bg-white rounded-xl border border-outline-variant/60 flex items-center gap-lg shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-tertiary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="award_star">award_star</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Pass Rate</span>
+<div class="font-headline-md text-headline-md text-tertiary-container">82%</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="w-full py-lg px-xl flex flex-col md:flex-row justify-between items-center gap-md bg-background border-t border-outline-variant/40 relative z-50">
+<div class="flex items-center gap-sm">
+<span class="font-label-md text-label-md font-bold text-on-surface">InterviewOps</span>
+<span class="font-body-sm text-body-sm text-secondary">© 2024. Technical Minimalism for AI Talent.</span>
+</div>
+<div class="flex gap-xl">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</footer>
+<script>
+        // Toggle empty state for demo purposes (Trigger via Ctrl+E)
+        function toggleEmptyState() {
+            const container = document.getElementById('history-container');
+            const empty = document.getElementById('empty-state');
+            container.classList.toggle('hidden');
+            empty.classList.toggle('hidden');
+            empty.classList.toggle('flex');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'e' && e.ctrlKey) toggleEmptyState();
+        });
+    </script>
+</body></html>
