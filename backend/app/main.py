@@ -1,4 +1,5 @@
 import uuid
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -6,6 +7,7 @@ load_dotenv()
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from .models import (
     AnswerRequest,
@@ -32,7 +34,7 @@ SESSIONS: dict[str, dict] = {}
 
 @app.get("/api/health")
 def health():
-    return {"status": "ok"}
+    return {"status": "ok", "mock": interviewer.MOCK}
 
 
 @app.post("/api/session/start", response_model=StartSessionResponse)
@@ -86,3 +88,8 @@ def get_meta_eval(session_id: str):
     if not session:
         raise HTTPException(404, "Session not found")
     return evals.grade_interviewer(session["transcript"])
+
+
+# Serve the frontend from the same origin (must be mounted after the API routes)
+FRONTEND_DIR = Path(__file__).resolve().parents[2] / "frontend"
+app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
