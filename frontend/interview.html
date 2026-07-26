@@ -143,8 +143,8 @@
 <span class="font-headline-md text-headline-md font-bold text-primary">InterviewOps</span>
 </div>
 <div class="hidden md:flex items-center gap-xl">
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">History</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">About</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="history.html">History</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="https://github.com/eklavya2201/interviewops">About</a>
 <div class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-variant/60 text-primary cursor-pointer transition-all active:opacity-80 active:scale-95">
 <span class="material-symbols-outlined" data-icon="person">person</span>
 </div>
@@ -161,10 +161,10 @@
 <!-- Progress Section -->
 <header class="mb-xl">
 <div class="flex justify-between items-end mb-sm">
-<span class="font-label-md text-label-md text-primary uppercase tracking-wider">Question 3 of 6</span>
-<span class="font-label-sm text-label-sm text-on-surface-variant">50% Completed</span>
+<span class="font-label-md text-label-md text-primary uppercase tracking-wider" id="q-label">Question 1 of 6</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant" id="q-pct">0% Completed</span>
 </div>
-<div class="flex gap-1 h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="flex gap-1 h-1 w-full bg-surface-container rounded-full overflow-hidden" id="q-bar">
 <div class="h-full w-1/6 bg-primary-container rounded-full"></div>
 <div class="h-full w-1/6 bg-primary-container rounded-full"></div>
 <div class="h-full w-1/6 bg-primary-container rounded-full"></div>
@@ -174,7 +174,7 @@
 </div>
 </header>
 <!-- Chat Container -->
-<div class="space-y-lg">
+<div class="space-y-lg" id="chat">
 <!-- Message 1: System/Interviewer -->
 <div class="flex flex-col gap-sm">
 <div class="flex items-center gap-sm">
@@ -250,7 +250,7 @@
 <button class="px-lg py-md bg-transparent border border-outline-variant/60 text-on-surface-variant rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-all">
                             Save Draft
                         </button>
-<button class="px-xl py-md bg-primary text-on-primary rounded-lg font-label-md text-label-md font-bold hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/20">
+<button class="px-xl py-md bg-primary text-on-primary rounded-lg font-label-md text-label-md font-bold hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-primary/20" id="submit-btn">
                             Submit answer
                         </button>
 </div>
@@ -271,28 +271,159 @@
 </div>
 </footer>
 <script>
-        // Simple micro-interaction for textarea focus
+        // ---- Session bootstrap -------------------------------------------------
+        const S = JSON.parse(sessionStorage.getItem('io_session') || 'null');
+        if (!S) location.href = 'index.html';
+        const TOTAL = 6;
+
+        const chat = document.getElementById('chat');
+        const qLabel = document.getElementById('q-label');
+        const qPct = document.getElementById('q-pct');
+        const qBar = document.getElementById('q-bar');
         const textarea = document.querySelector('textarea');
+        const submitBtn = document.getElementById('submit-btn');
+        chat.innerHTML = '';
+
+        function el(html) {
+            const t = document.createElement('template');
+            t.innerHTML = html.trim();
+            return t.content.firstElementChild;
+        }
+        function esc(s) {
+            const d = document.createElement('div');
+            d.textContent = s;
+            return d.innerHTML;
+        }
+        function interviewerMsg(text) {
+            chat.appendChild(el(`
+              <div class="flex flex-col gap-sm">
+                <div class="flex items-center gap-sm">
+                  <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant/60">
+                    <span class="material-symbols-outlined text-primary text-[18px]">smart_toy</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Interviewer</span>
+                </div>
+                <div class="glass-panel p-lg rounded-xl max-w-[90%] self-start shadow-sm">
+                  <p class="font-body-md text-body-md text-on-surface">${esc(text)}</p>
+                </div>
+              </div>`));
+            scrollBottom();
+        }
+        function userMsg(text) {
+            chat.appendChild(el(`
+              <div class="flex flex-col gap-sm items-end">
+                <div class="flex items-center gap-sm">
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">You</span>
+                  <div class="w-8 h-8 rounded-lg bg-primary-fixed/40 flex items-center justify-center border border-primary/20">
+                    <span class="material-symbols-outlined text-primary text-[18px]">person</span>
+                  </div>
+                </div>
+                <div class="bg-secondary-container/40 border border-secondary-container p-lg rounded-xl max-w-[90%] self-end">
+                  <p class="font-body-md text-body-md text-on-secondary-container">${esc(text)}</p>
+                </div>
+              </div>`));
+            scrollBottom();
+        }
+        function thinkingMsg() {
+            const node = el(`
+              <div class="flex flex-col gap-sm" id="thinking">
+                <div class="flex items-center gap-sm">
+                  <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center border border-outline-variant/60">
+                    <span class="material-symbols-outlined text-primary text-[18px]">smart_toy</span>
+                  </div>
+                  <span class="font-label-sm text-label-sm text-on-surface-variant">Interviewer</span>
+                </div>
+                <div class="glass-panel p-lg rounded-xl max-w-[90%] self-start shimmer-bg relative overflow-hidden">
+                  <div class="flex items-center gap-md">
+                    <div class="flex gap-1">
+                      <div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                      <div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                      <div class="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></div>
+                    </div>
+                    <span class="font-body-sm text-body-sm text-on-surface-variant italic">Interviewer is thinking...</span>
+                  </div>
+                </div>
+              </div>`);
+            chat.appendChild(node);
+            scrollBottom();
+            return node;
+        }
+        function scrollBottom() {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+        function updateProgress(qnum) {
+            const shown = Math.min(qnum, TOTAL);
+            qLabel.textContent = `Question ${shown} of ${TOTAL}`;
+            const pct = Math.round(Math.min(qnum - 1, TOTAL) / TOTAL * 100);
+            qPct.textContent = `${pct}% Completed`;
+            qBar.innerHTML = '';
+            for (let i = 1; i <= TOTAL; i++) {
+                qBar.appendChild(el(`<div class="h-full w-1/6 ${i <= shown ? 'bg-primary-container' : 'bg-surface-variant'} rounded-full"></div>`));
+            }
+        }
+
+        // ---- Initial render ----------------------------------------------------
+        interviewerMsg(S.opening);
+        updateProgress(S.qnum || 1);
+
+        // ---- Answer loop -------------------------------------------------------
+        let busy = false;
+        async function submitAnswer() {
+            const answer = textarea.value.trim();
+            if (!answer || busy) return;
+            busy = true;
+            submitBtn.disabled = true;
+            userMsg(answer);
+            textarea.value = '';
+            const spinner = thinkingMsg();
+            try {
+                const res = await fetch(`/api/session/${S.id}/answer`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answer }),
+                });
+                if (!res.ok) throw new Error((await res.json()).detail || 'HTTP ' + res.status);
+                const data = await res.json();
+                spinner.remove();
+                interviewerMsg(data.next_question);
+                S.qnum = data.question_number;
+                sessionStorage.setItem('io_session', JSON.stringify(S));
+                updateProgress(S.qnum);
+                if (data.done) {
+                    submitBtn.textContent = 'View your report';
+                    submitBtn.disabled = false;
+                    textarea.disabled = true;
+                    textarea.placeholder = 'Interview complete.';
+                    submitBtn.onclick = () => location.href = 'report.html';
+                    busy = true; // block further answers
+                    return;
+                }
+            } catch (err) {
+                spinner.remove();
+                interviewerMsg('Something went wrong: ' + err.message + ' — please try submitting again.');
+            }
+            busy = false;
+            submitBtn.disabled = false;
+        }
+        submitBtn.addEventListener('click', submitAnswer);
+        textarea.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) submitAnswer();
+        });
+
+        // ---- Micro-interactions ------------------------------------------------
         textarea.addEventListener('focus', () => {
             textarea.closest('.relative').classList.add('shadow-[0_0_20px_rgba(5,150,105,0.08)]');
         });
         textarea.addEventListener('blur', () => {
             textarea.closest('.relative').classList.remove('shadow-[0_0_20px_rgba(5,150,105,0.08)]');
         });
-
-        // Mock pulse state toggle for mic
         const micButton = document.getElementById('mic-btn');
         const micRing = micButton.querySelector('.pulse-animation');
         let isRecording = false;
         micButton.addEventListener('click', () => {
             isRecording = !isRecording;
-            if (isRecording) {
-                micRing.style.animationDuration = '1s';
-                micButton.classList.add('text-primary');
-            } else {
-                micRing.style.animationDuration = '2s';
-                micButton.classList.remove('text-primary');
-            }
+            micRing.style.animationDuration = isRecording ? '1s' : '2s';
+            micButton.classList.toggle('text-primary', isRecording);
         });
     </script>
 </body></html>
