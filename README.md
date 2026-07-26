@@ -4,6 +4,8 @@
 
 > Most AI interview tools stop at "ask questions." InterviewOps ships a built-in eval pipeline — the same discipline production AI teams use — so every interview doubles as a benchmark run.
 
+**🔴 Live demo: [interviewops.onrender.com](https://interviewops.onrender.com)** *(free tier — first visit after idle takes ~30s to wake)*
+
 ![Demo](docs/demo.gif)
 
 ## Two modes: free demo vs real AI
@@ -73,7 +75,7 @@ To showcase real AI interviews: Render dashboard → the service → **Environme
 - [x] LLM-as-judge evals (candidate report + interviewer self-audit)
 - [x] Frontend (Google Stitch design → light theme) wired to the API
 - [x] Free demo mode (runs with zero API cost)
-- [ ] Deploy on Render (blueprint ready — see above)
+- [x] Deployed on Render — [interviewops.onrender.com](https://interviewops.onrender.com)
 - [ ] Voice mode (Web Speech API mic input + spoken questions)
 - [ ] Model benchmark table (Claude vs GPT vs Gemini as interviewer, scored by the meta-eval)
 - [ ] Cost dashboard (tokens + ₹ per interview)
