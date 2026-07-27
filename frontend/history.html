@@ -166,13 +166,13 @@
 <span class="material-symbols-outlined" data-icon="history">history</span>
 <span class="font-label-md text-label-md">History</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant/60 rounded-lg transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span class="font-label-md text-label-md">Feedback</span>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant/60 rounded-lg transition-all" href="costs.html">
+<span class="material-symbols-outlined" data-icon="currency_rupee">currency_rupee</span>
+<span class="font-label-md text-label-md">Costs</span>
 </a>
-<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant/60 rounded-lg transition-all" href="#">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-<span class="font-label-md text-label-md">Settings</span>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-variant/60 rounded-lg transition-all" href="benchmark.html">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md">Benchmark</span>
 </a>
 </nav>
 <div class="mt-auto p-md rounded-xl bg-surface-variant/50 border border-outline-variant/40">
@@ -448,8 +448,22 @@
               </tr>`);
         }
 
-        const hist = JSON.parse(localStorage.getItem('io_history') || '[]');
         const tbody = document.getElementById('history-rows');
+
+        async function loadHistory() {
+            const local = JSON.parse(localStorage.getItem('io_history') || '[]');
+            let server = [];
+            try {
+                server = await fetch('/api/history').then(r => r.ok ? r.json() : []);
+            } catch {}
+            // Merge by session id — local entries win (they always carry the meta-eval)
+            const byId = new Map();
+            server.filter(h => h.report).forEach(h => byId.set(h.id, h));
+            local.forEach(h => byId.set(h.id, h));
+            return [...byId.values()].sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        function renderHistory(hist) {
         tbody.innerHTML = '';
 
         if (hist.length === 0) {
@@ -469,5 +483,7 @@
             document.getElementById('stat-count').textContent = String(hist.length);
             document.getElementById('stat-pass').textContent = Math.round(passes / hist.length * 100) + '%';
         }
+        }
+        loadHistory().then(renderHistory);
     </script>
 </body></html>

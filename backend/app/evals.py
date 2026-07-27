@@ -1,4 +1,5 @@
 """LLM-as-judge: scores the candidate AND the interviewer itself."""
+from . import db
 from .interviewer import MOCK, get_client
 from .models import InterviewerEval, InterviewReport, QuestionScore
 
@@ -62,7 +63,7 @@ def _mock_report(transcript: list[dict]) -> InterviewReport:
     )
 
 
-def grade_candidate(transcript: list[dict], role: str, difficulty: str) -> InterviewReport:
+def grade_candidate(transcript: list[dict], role: str, difficulty: str, session_id: str | None = None) -> InterviewReport:
     if MOCK:
         return _mock_report(transcript)
     response = get_client().messages.parse(
@@ -76,10 +77,12 @@ def grade_candidate(transcript: list[dict], role: str, difficulty: str) -> Inter
         }],
         output_format=InterviewReport,
     )
+    if session_id:
+        db.record_usage(session_id, "report", JUDGE_MODEL, response.usage.input_tokens, response.usage.output_tokens)
     return response.parsed_output
 
 
-def grade_interviewer(transcript: list[dict]) -> InterviewerEval:
+def grade_interviewer(transcript: list[dict], session_id: str | None = None) -> InterviewerEval:
     if MOCK:
         return InterviewerEval(
             followed_up_on_weak_answers=7,
@@ -97,4 +100,6 @@ def grade_interviewer(transcript: list[dict]) -> InterviewerEval:
         }],
         output_format=InterviewerEval,
     )
+    if session_id:
+        db.record_usage(session_id, "meta_eval", JUDGE_MODEL, response.usage.input_tokens, response.usage.output_tokens)
     return response.parsed_output

@@ -164,6 +164,8 @@
 </div>
 <nav class="hidden md:flex gap-xl">
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="history.html">History</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="costs.html">Costs</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="benchmark.html">Benchmark</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="https://github.com/eklavya2201/interviewops">About</a>
 </nav>
 <div class="flex items-center gap-md">
@@ -369,10 +371,14 @@
             r.top_strengths.forEach(s => document.getElementById('strengths').appendChild(sideItem(s, 'star', 'primary')));
             r.top_improvements.forEach(s => document.getElementById('improvements').appendChild(sideItem(s, 'edit', 'tertiary-fixed-dim')));
             const audit = document.getElementById('audit');
-            for (const [key, label] of Object.entries(AUDIT_LABELS)) {
-                audit.appendChild(auditRow(label, m[key]));
+            if (m) {
+                for (const [key, label] of Object.entries(AUDIT_LABELS)) {
+                    audit.appendChild(auditRow(label, m[key]));
+                }
+                document.getElementById('audit-notes').textContent = m.notes;
+            } else {
+                document.getElementById('audit-notes').textContent = 'No self-audit was recorded for this interview.';
             }
-            document.getElementById('audit-notes').textContent = m.notes;
         }
 
         function fail(msg) {
@@ -384,7 +390,12 @@
             const histId = new URLSearchParams(location.search).get('id');
             const hist = JSON.parse(localStorage.getItem('io_history') || '[]');
             if (histId) {
-                const entry = hist.find(h => h.id === histId);
+                let entry = hist.find(h => h.id === histId);
+                if (!entry) {
+                    // Not in this browser's localStorage — try the server's history
+                    const server = await fetch('/api/history').then(r => r.ok ? r.json() : []).catch(() => []);
+                    entry = server.find(h => h.id === histId);
+                }
                 return entry ? render(entry) : fail('Report not found in history.');
             }
             const S = JSON.parse(sessionStorage.getItem('io_session') || 'null');

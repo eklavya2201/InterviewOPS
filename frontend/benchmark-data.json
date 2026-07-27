@@ -1,0 +1,50 @@
+{
+  "sample": true,
+  "generated_at": null,
+  "judge_model": "claude-opus-4-8",
+  "questions_per_interview": 6,
+  "results": [
+    {
+      "model": "Claude Opus 4.8",
+      "model_id": "claude-opus-4-8",
+      "provider": "anthropic",
+      "runs": 2,
+      "followed_up_on_weak_answers": 9.0,
+      "question_relevance": 9.5,
+      "difficulty_calibration": 8.5,
+      "no_hallucinated_facts": 10.0,
+      "overall": 9.3,
+      "input_tokens": 41250,
+      "output_tokens": 3980,
+      "cost_inr": 26.9
+    },
+    {
+      "model": "GPT-4o",
+      "model_id": "gpt-4o",
+      "provider": "openai",
+      "runs": 2,
+      "followed_up_on_weak_answers": 8.0,
+      "question_relevance": 9.0,
+      "difficulty_calibration": 8.0,
+      "no_hallucinated_facts": 9.5,
+      "overall": 8.6,
+      "input_tokens": 39800,
+      "output_tokens": 4210,
+      "cost_inr": 12.5
+    },
+    {
+      "model": "Gemini 2.0 Flash",
+      "model_id": "gemini-2.0-flash",
+      "provider": "gemini",
+      "runs": 2,
+      "followed_up_on_weak_answers": 7.0,
+      "question_relevance": 8.5,
+      "difficulty_calibration": 7.5,
+      "no_hallucinated_facts": 9.0,
+      "overall": 8.0,
+      "input_tokens": 40100,
+      "output_tokens": 4550,
+      "cost_inr": 0.51
+    }
+  ]
+}

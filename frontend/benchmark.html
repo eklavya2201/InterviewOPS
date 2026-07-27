@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InterviewOps | Model Benchmark</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Fraunces:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container": "#f1ece3",
+                "surface-container-low": "#f5f1e8",
+                "surface-container-lowest": "#ffffff",
+                "surface-variant": "#e9e1d5",
+                "on-surface-variant": "#57534e",
+                "background": "#faf7f2",
+                "surface": "#faf7f2",
+                "on-background": "#1c1917",
+                "on-surface": "#1c1917",
+                "primary": "#4338ca",
+                "primary-container": "#6366f1",
+                "primary-fixed": "#c7d2fe",
+                "on-primary": "#ffffff",
+                "on-primary-fixed": "#312e81",
+                "secondary": "#7c3aed",
+                "tertiary-fixed": "#ffddb7",
+                "tertiary-fixed-dim": "#b45309",
+                "tertiary-container": "#d97706",
+                "error": "#dc2626",
+                "outline": "#78716c",
+                "outline-variant": "#ddd5c9"
+            },
+            "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+            "spacing": { "gutter": "24px", "lg": "24px", "sm": "8px", "unit": "4px", "md": "16px", "xl": "32px", "xs": "4px", "max_width": "1440px" },
+            "fontFamily": {
+                "body-md": ["Inter"], "body-sm": ["Inter"],
+                "headline-lg": ["Fraunces"], "headline-md": ["Fraunces"], "headline-sm": ["Fraunces"],
+                "label-sm": ["IBM Plex Mono"], "label-md": ["IBM Plex Mono"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body { background-color: #faf7f2; color: #1c1917; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    main > div > * { animation: riseIn .45s ease both; }
+    main > div > *:nth-child(2) { animation-delay: .07s; }
+    main > div > *:nth-child(3) { animation-delay: .14s; }
+</style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col">
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/40">
+<div class="max-w-max_width mx-auto flex justify-between items-center px-lg py-md">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="index.html">InterviewOps</a>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="history.html">History</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="costs.html">Costs</a>
+<a class="font-label-md text-label-md text-primary" href="benchmark.html">Benchmark</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="https://github.com/eklavya2201/interviewops">About</a>
+</nav>
+</div>
+</header>
+
+<main class="flex-1 pt-28 pb-16 px-gutter">
+<div class="max-w-5xl mx-auto space-y-xl">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Interviewer Model Benchmark</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl">
+    Each model conducts the same mock interview against a Claude-simulated fresher candidate; the transcripts are then scored
+    by the same LLM-as-judge meta-eval that audits the live app. Higher is better on every dimension (0–10).
+</p>
+</div>
+
+<div class="hidden text-center font-label-sm text-label-sm text-tertiary-fixed-dim bg-tertiary-fixed/30 border border-tertiary-fixed rounded-lg py-2 px-md" id="sample-note">
+    Illustrative sample data — run <span class="font-bold">python backend/benchmark.py</span> with API keys set to generate real results.
+</div>
+
+<div class="bg-white rounded-xl border border-outline-variant/60 overflow-hidden shadow-lg shadow-indigo-950/5">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant/40">
+<tr>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Interviewer Model</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Follow-ups</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Relevance</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Calibration</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Factual</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Overall</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Cost / Run</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30" id="bench-rows"></tbody>
+</table>
+</div>
+</div>
+
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="meta-note"></p>
+
+<div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-lg">
+<h3 class="font-headline-sm text-headline-sm mb-sm">How it works</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+    <span class="font-bold text-on-surface">1. Same candidate for every model.</span> A Claude-played "fresher AI engineer" persona answers every interviewer, so differences come from the interviewer, not the candidate.
+    <span class="font-bold text-on-surface">2. Blind judging.</span> The judge sees only the transcript — it doesn't know which model conducted the interview.
+    <span class="font-bold text-on-surface">3. Same rubric as production.</span> The meta-eval dimensions (follow-up quality, relevance, difficulty calibration, factual accuracy) are the exact scores shown on every live report's "Interviewer Self-Audit" panel.
+</p>
+</div>
+</div>
+</main>
+
+<footer class="w-full py-lg px-xl flex flex-col md:flex-row justify-between items-center gap-md border-t border-outline-variant/40 bg-background">
+<div class="font-label-md text-label-md font-bold text-on-surface">© 2024 InterviewOps. Technical Minimalism for AI Talent.</div>
+</footer>
+
+<script>
+    function el(html) {
+        const t = document.createElement('template');
+        t.innerHTML = html.trim();
+        return t.content.firstElementChild;
+    }
+    function esc(s) {
+        const d = document.createElement('div');
+        d.textContent = s ?? '';
+        return d.innerHTML;
+    }
+    function scoreCell(v) {
+        const color = v >= 8.5 ? 'primary' : v >= 7 ? 'secondary' : 'tertiary-fixed-dim';
+        return `<td class="px-lg py-md text-right"><span class="font-label-md text-label-md text-${color}">${v.toFixed(1)}</span></td>`;
+    }
+
+    async function load() {
+        const data = await fetch('benchmark-data.json').then(r => r.json());
+        if (data.sample) document.getElementById('sample-note').classList.remove('hidden');
+        const tbody = document.getElementById('bench-rows');
+        data.results.forEach((r, i) => {
+            tbody.appendChild(el(`
+              <tr class="hover:bg-surface-container-low transition-colors">
+                <td class="px-lg py-md">
+                  <div class="flex items-center gap-md">
+                    ${i === 0 ? '<span class="material-symbols-outlined text-tertiary-container text-[20px]">trophy</span>' : '<span class="w-[20px]"></span>'}
+                    <div class="flex flex-col">
+                      <span class="font-body-md text-body-md font-medium text-on-surface">${esc(r.model)}</span>
+                      <span class="font-label-sm text-label-sm text-on-surface-variant">${esc(r.model_id)} · ${r.runs} run${r.runs > 1 ? 's' : ''}</span>
+                    </div>
+                  </div>
+                </td>
+                ${scoreCell(r.followed_up_on_weak_answers)}
+                ${scoreCell(r.question_relevance)}
+                ${scoreCell(r.difficulty_calibration)}
+                ${scoreCell(r.no_hallucinated_facts)}
+                <td class="px-lg py-md text-right"><span class="font-label-md text-label-md font-bold text-on-surface">${r.overall.toFixed(1)}</span></td>
+                <td class="px-lg py-md text-right font-label-md text-label-md text-on-surface-variant">₹${(r.cost_inr / r.runs).toFixed(2)}</td>
+              </tr>`));
+        });
+        document.getElementById('meta-note').textContent =
+            `Judge: ${data.judge_model} · ${data.questions_per_interview} questions per interview` +
+            (data.generated_at ? ` · generated ${new Date(data.generated_at).toLocaleString('en-IN')}` : '');
+    }
+    load().catch(err => {
+        document.getElementById('meta-note').textContent = 'Could not load benchmark data: ' + err.message;
+    });
+</script>
+</body></html>

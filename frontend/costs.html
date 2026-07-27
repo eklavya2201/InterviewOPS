@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InterviewOps | Cost Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Fraunces:wght@500;600;700&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container": "#f1ece3",
+                "surface-container-low": "#f5f1e8",
+                "surface-container-lowest": "#ffffff",
+                "surface-variant": "#e9e1d5",
+                "on-surface-variant": "#57534e",
+                "background": "#faf7f2",
+                "surface": "#faf7f2",
+                "on-background": "#1c1917",
+                "on-surface": "#1c1917",
+                "primary": "#4338ca",
+                "primary-container": "#6366f1",
+                "primary-fixed": "#c7d2fe",
+                "on-primary": "#ffffff",
+                "on-primary-fixed": "#312e81",
+                "secondary": "#7c3aed",
+                "tertiary-fixed": "#ffddb7",
+                "tertiary-fixed-dim": "#b45309",
+                "tertiary-container": "#d97706",
+                "error": "#dc2626",
+                "outline": "#78716c",
+                "outline-variant": "#ddd5c9"
+            },
+            "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+            "spacing": { "gutter": "24px", "lg": "24px", "sm": "8px", "unit": "4px", "md": "16px", "xl": "32px", "xs": "4px", "max_width": "1440px" },
+            "fontFamily": {
+                "body-md": ["Inter"], "body-sm": ["Inter"],
+                "headline-lg": ["Fraunces"], "headline-md": ["Fraunces"], "headline-sm": ["Fraunces"],
+                "label-sm": ["IBM Plex Mono"], "label-md": ["IBM Plex Mono"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body { background-color: #faf7f2; color: #1c1917; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    main > div > * { animation: riseIn .45s ease both; }
+    main > div > *:nth-child(2) { animation-delay: .07s; }
+    main > div > *:nth-child(3) { animation-delay: .14s; }
+</style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen flex flex-col">
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/40">
+<div class="max-w-max_width mx-auto flex justify-between items-center px-lg py-md">
+<a class="font-headline-md text-headline-md font-bold text-primary" href="index.html">InterviewOps</a>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="history.html">History</a>
+<a class="font-label-md text-label-md text-primary" href="costs.html">Costs</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="benchmark.html">Benchmark</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="https://github.com/eklavya2201/interviewops">About</a>
+</nav>
+</div>
+</header>
+
+<main class="flex-1 pt-28 pb-16 px-gutter">
+<div class="max-w-5xl mx-auto space-y-xl">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-xs">Cost Dashboard</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Token usage and spend per interview — measured from real API responses, priced at Anthropic list rates.</p>
+</div>
+
+<div class="hidden text-center font-label-sm text-label-sm text-tertiary-fixed-dim bg-tertiary-fixed/30 border border-tertiary-fixed rounded-lg py-2 px-md" id="mock-note">
+    Demo mode — the backend is running without an API key, so every interview costs ₹0. Real usage appears here once ANTHROPIC_API_KEY is set.
+</div>
+
+<!-- Summary tiles -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="p-lg bg-white rounded-xl border border-outline-variant/60 flex items-center gap-lg shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">currency_rupee</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Spend</span>
+<div class="font-headline-md text-headline-md text-primary" id="stat-cost">–</div>
+</div>
+</div>
+<div class="p-lg bg-white rounded-xl border border-outline-variant/60 flex items-center gap-lg shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">token</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Tokens</span>
+<div class="font-headline-md text-headline-md text-secondary" id="stat-tokens">–</div>
+</div>
+</div>
+<div class="p-lg bg-white rounded-xl border border-outline-variant/60 flex items-center gap-lg shadow-sm">
+<div class="w-12 h-12 rounded-lg bg-tertiary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary-container">record_voice_over</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Interviews Billed</span>
+<div class="font-headline-md text-headline-md text-tertiary-container" id="stat-sessions">–</div>
+</div>
+</div>
+</div>
+
+<!-- Per-session table -->
+<div class="bg-white rounded-xl border border-outline-variant/60 overflow-hidden shadow-lg shadow-indigo-950/5" id="table-container">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant/40">
+<tr>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Date</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Role</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Model</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">API Calls</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Input Tok</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Output Tok</th>
+<th class="px-lg py-md font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Cost</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30" id="usage-rows"></tbody>
+</table>
+</div>
+</div>
+
+<!-- Empty state -->
+<div class="hidden flex-col items-center justify-center py-24 px-lg text-center bg-white rounded-xl border border-dashed border-outline-variant/70" id="empty-state">
+<div class="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-lg">
+<span class="material-symbols-outlined text-5xl text-primary/50" style="font-variation-settings: 'wght' 200;">savings</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-sm">No billed usage yet</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+    Token usage is recorded per API call whenever a real (non-demo) interview runs. Complete one to see its cost here.
+</p>
+</div>
+
+<p class="font-body-sm text-body-sm text-on-surface-variant" id="rate-note"></p>
+</div>
+</main>
+
+<footer class="w-full py-lg px-xl flex flex-col md:flex-row justify-between items-center gap-md border-t border-outline-variant/40 bg-background">
+<div class="font-label-md text-label-md font-bold text-on-surface">© 2024 InterviewOps. Technical Minimalism for AI Talent.</div>
+</footer>
+
+<script>
+    const ROLE_LABELS = {
+        'ai-engineer': 'AI Engineer', 'ml-engineer': 'ML Engineer',
+        'data-scientist': 'Data Scientist', 'data-analyst': 'Data Analyst',
+    };
+    function el(html) {
+        const t = document.createElement('template');
+        t.innerHTML = html.trim();
+        return t.content.firstElementChild;
+    }
+    function esc(s) {
+        const d = document.createElement('div');
+        d.textContent = s ?? '';
+        return d.innerHTML;
+    }
+    const fmt = n => n.toLocaleString('en-IN');
+
+    async function load() {
+        const u = await fetch('/api/usage').then(r => r.json());
+        if (u.mock) document.getElementById('mock-note').classList.remove('hidden');
+        document.getElementById('stat-cost').textContent = '₹' + u.total_cost_inr.toFixed(2);
+        document.getElementById('stat-tokens').textContent = fmt(u.total_input_tokens + u.total_output_tokens);
+        document.getElementById('stat-sessions').textContent = String(u.session_count);
+        document.getElementById('rate-note').textContent =
+            `Costs are computed from per-call token usage at Anthropic list prices, converted at ₹${u.usd_to_inr}/USD (set USD_TO_INR to adjust).`;
+
+        const tbody = document.getElementById('usage-rows');
+        if (u.sessions.length === 0) {
+            document.getElementById('table-container').classList.add('hidden');
+            const empty = document.getElementById('empty-state');
+            empty.classList.remove('hidden');
+            empty.classList.add('flex');
+            return;
+        }
+        u.sessions.forEach(s => {
+            const date = new Date(s.created_at + 'Z').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+            tbody.appendChild(el(`
+              <tr class="hover:bg-surface-container-low transition-colors">
+                <td class="px-lg py-md font-label-md text-label-md text-on-surface">${esc(date)}</td>
+                <td class="px-lg py-md font-body-md text-body-md">${esc(ROLE_LABELS[s.role] || s.role || 'Unknown')}</td>
+                <td class="px-lg py-md font-label-sm text-label-sm text-on-surface-variant">${esc(s.model)}</td>
+                <td class="px-lg py-md font-label-md text-label-md text-right">${fmt(s.api_calls)}</td>
+                <td class="px-lg py-md font-label-md text-label-md text-right">${fmt(s.input_tokens)}</td>
+                <td class="px-lg py-md font-label-md text-label-md text-right">${fmt(s.output_tokens)}</td>
+                <td class="px-lg py-md font-label-md text-label-md text-right text-primary font-bold">₹${s.cost_inr.toFixed(2)}</td>
+              </tr>`));
+        });
+    }
+    load().catch(err => {
+        document.getElementById('rate-note').textContent = 'Could not load usage: ' + err.message + ' — is the backend running?';
+    });
+</script>
+</body></html>

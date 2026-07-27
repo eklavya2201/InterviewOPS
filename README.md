@@ -67,6 +67,8 @@ To showcase real AI interviews: Render dashboard → the service → **Environme
 | `POST /api/session/{id}/answer` | Submit an answer → adaptive next question (6 total) |
 | `POST /api/session/{id}/report` | Structured candidate report (scores, hire signal) |
 | `POST /api/session/{id}/meta-eval` | **The differentiator** — judge the AI interviewer itself |
+| `GET /api/history` | Completed interviews persisted in SQLite (survives restarts) |
+| `GET /api/usage` | Token usage + ₹ cost per interview for the cost dashboard |
 | `GET /api/health` | `{status, mock}` — tells the UI which mode is active |
 
 ## Roadmap
@@ -76,10 +78,28 @@ To showcase real AI interviews: Render dashboard → the service → **Environme
 - [x] Frontend (Google Stitch design → light theme) wired to the API
 - [x] Free demo mode (runs with zero API cost)
 - [x] Deployed on Render — [interviewops.onrender.com](https://interviewops.onrender.com)
-- [ ] Voice mode (Web Speech API mic input + spoken questions)
-- [ ] Model benchmark table (Claude vs GPT vs Gemini as interviewer, scored by the meta-eval)
-- [ ] Cost dashboard (tokens + ₹ per interview)
-- [ ] SQLite persistence for sessions and history
+- [x] Voice mode (Web Speech API mic input + spoken questions — mic + speaker toggles on the interview screen)
+- [x] Model benchmark table (Claude vs GPT vs Gemini as interviewer, scored by the meta-eval — see below)
+- [x] Cost dashboard (tokens + ₹ per interview at `/costs.html`, powered by per-call usage tracking)
+- [x] SQLite persistence for sessions and history (sessions survive restarts; `/api/history` backs the History page)
+
+## Model benchmark
+
+Which model makes the best interviewer? `backend/benchmark.py` has each model conduct the same
+interview against a Claude-simulated fresher candidate, then scores the transcripts with the same
+LLM-as-judge meta-eval the live app uses. Results render at `/benchmark.html`.
+
+```bash
+cd backend
+# ANTHROPIC_API_KEY required (candidate simulator + judge); OPENAI_API_KEY / GEMINI_API_KEY optional
+python benchmark.py --runs 2
+```
+
+The repo ships illustrative sample data (marked as such in the UI) so the page works out of the box;
+running the script overwrites `frontend/benchmark-data.json` with real results.
+
+> Note on persistence in production: Render's free tier has an ephemeral disk, so the SQLite file
+> resets on redeploys. Fine for a portfolio demo; point `DB_PATH` at a mounted disk to keep data.
 
 ## Why evals?
 

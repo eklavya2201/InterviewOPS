@@ -152,6 +152,8 @@
 </div>
 <div class="hidden md:flex items-center gap-xl">
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="history.html">History</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="costs.html">Costs</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="benchmark.html">Benchmark</a>
 <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="https://github.com/eklavya2201/interviewops">About</a>
 <div class="flex items-center justify-center w-10 h-10 rounded-full bg-surface-variant/60 text-primary cursor-pointer transition-all active:opacity-80 active:scale-95">
 <span class="material-symbols-outlined" data-icon="person">person</span>
@@ -248,11 +250,14 @@
 </div>
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-md">
-<button class="relative w-12 h-12 flex items-center justify-center bg-surface-container rounded-full border border-outline-variant/60 text-on-surface-variant hover:text-primary transition-all group" id="mic-btn">
-<div class="absolute inset-0 rounded-full bg-primary/10 pulse-animation"></div>
+<button class="relative w-12 h-12 flex items-center justify-center bg-surface-container rounded-full border border-outline-variant/60 text-on-surface-variant hover:text-primary transition-all group" id="mic-btn" title="Speak your answer">
+<div class="absolute inset-0 rounded-full bg-primary/10 pulse-animation hidden" id="mic-ring"></div>
 <span class="material-symbols-outlined relative" data-icon="mic">mic</span>
 </button>
-<span class="hidden sm:block font-label-sm text-label-sm text-on-surface-variant/70">Hold to speak answer</span>
+<button class="relative w-12 h-12 flex items-center justify-center bg-surface-container rounded-full border border-outline-variant/60 text-on-surface-variant hover:text-primary transition-all" id="tts-btn" title="Read questions aloud">
+<span class="material-symbols-outlined relative" data-icon="volume_up">volume_off</span>
+</button>
+<span class="hidden sm:block font-label-sm text-label-sm text-on-surface-variant/70" id="voice-hint">Tap mic to speak your answer</span>
 </div>
 <div class="flex items-center gap-md">
 <button class="px-lg py-md bg-transparent border border-outline-variant/60 text-on-surface-variant rounded-lg font-label-md text-label-md hover:bg-surface-variant transition-all">
@@ -394,6 +399,7 @@
                 const data = await res.json();
                 spinner.remove();
                 interviewerMsg(data.next_question);
+                speak(data.next_question);
                 S.qnum = data.question_number;
                 sessionStorage.setItem('io_session', JSON.stringify(S));
                 updateProgress(S.qnum);
@@ -425,13 +431,77 @@
         textarea.addEventListener('blur', () => {
             textarea.closest('.relative').classList.remove('shadow-[0_0_20px_rgba(67,56,202,0.08)]');
         });
+
+        // ---- Voice mode: mic input (Web Speech API) ----------------------------
         const micButton = document.getElementById('mic-btn');
-        const micRing = micButton.querySelector('.pulse-animation');
+        const micRing = document.getElementById('mic-ring');
+        const voiceHint = document.getElementById('voice-hint');
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = null;
         let isRecording = false;
+
+        if (!SR) {
+            micButton.disabled = true;
+            micButton.classList.add('opacity-40');
+            voiceHint.textContent = 'Voice input not supported in this browser';
+        } else {
+            recognition = new SR();
+            recognition.lang = 'en-IN';
+            recognition.continuous = true;
+            recognition.interimResults = false;
+            recognition.onresult = (e) => {
+                for (let i = e.resultIndex; i < e.results.length; i++) {
+                    if (e.results[i].isFinal) {
+                        const t = e.results[i][0].transcript.trim();
+                        textarea.value = (textarea.value ? textarea.value.trimEnd() + ' ' : '') + t;
+                    }
+                }
+            };
+            recognition.onerror = (e) => {
+                stopRecording();
+                if (e.error === 'not-allowed') voiceHint.textContent = 'Mic access denied — allow it in browser settings';
+            };
+            recognition.onend = () => { if (isRecording) recognition.start(); }; // auto-restart on silence
+        }
+        function stopRecording() {
+            isRecording = false;
+            micRing.classList.add('hidden');
+            micButton.classList.remove('text-primary');
+            voiceHint.textContent = 'Tap mic to speak your answer';
+            try { recognition && recognition.stop(); } catch {}
+        }
         micButton.addEventListener('click', () => {
-            isRecording = !isRecording;
-            micRing.style.animationDuration = isRecording ? '1s' : '2s';
-            micButton.classList.toggle('text-primary', isRecording);
+            if (!recognition) return;
+            if (isRecording) return stopRecording();
+            isRecording = true;
+            micRing.classList.remove('hidden');
+            micButton.classList.add('text-primary');
+            voiceHint.textContent = 'Listening… tap again to stop';
+            recognition.start();
         });
+
+        // ---- Voice mode: spoken questions (speechSynthesis) --------------------
+        const ttsButton = document.getElementById('tts-btn');
+        const ttsIcon = ttsButton.querySelector('.material-symbols-outlined');
+        let ttsOn = localStorage.getItem('io_tts') === '1';
+
+        function renderTts() {
+            ttsIcon.textContent = ttsOn ? 'volume_up' : 'volume_off';
+            ttsButton.classList.toggle('text-primary', ttsOn);
+        }
+        function speak(text) {
+            if (!ttsOn || !('speechSynthesis' in window)) return;
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.rate = 1.05;
+            speechSynthesis.speak(u);
+        }
+        ttsButton.addEventListener('click', () => {
+            ttsOn = !ttsOn;
+            localStorage.setItem('io_tts', ttsOn ? '1' : '0');
+            renderTts();
+            if (!ttsOn) speechSynthesis.cancel();
+        });
+        renderTts();
     </script>
 </body></html>

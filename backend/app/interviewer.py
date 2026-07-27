@@ -3,6 +3,7 @@ import os
 
 import anthropic
 
+from . import db
 from .models import AnswerResponse
 
 MODEL = "claude-opus-4-8"
@@ -59,7 +60,7 @@ def build_system(role: str, difficulty: str, candidate_name: str, resume_summary
     )
 
 
-def ask_next(system: str, transcript: list[dict], question_number: int) -> AnswerResponse:
+def ask_next(system: str, transcript: list[dict], question_number: int, session_id: str | None = None) -> AnswerResponse:
     """Given the transcript so far (alternating user/assistant), get the next question."""
     done = question_number >= MAX_QUESTIONS
 
@@ -83,5 +84,7 @@ def ask_next(system: str, transcript: list[dict], question_number: int) -> Answe
         messages=messages,
         thinking={"type": "adaptive"},
     )
+    if session_id:
+        db.record_usage(session_id, "interview", MODEL, response.usage.input_tokens, response.usage.output_tokens)
     text = next(b.text for b in response.content if b.type == "text")
     return AnswerResponse(next_question=text, question_number=question_number, done=done)
