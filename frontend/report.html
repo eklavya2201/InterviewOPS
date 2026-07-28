@@ -57,6 +57,15 @@
     main > *:nth-child(3) { animation-delay: .14s; }
     main > *:nth-child(4) { animation-delay: .21s; }
     main > *:nth-child(5) { animation-delay: .28s; }
+
+    @media print {
+        header, footer, #loading, .no-print { display: none !important; }
+        body { background: #fff !important; }
+        main { padding-top: 0 !important; }
+        main > * { animation: none !important; }
+        .glass-panel { background: #fff; backdrop-filter: none; }
+        .collapsible-content { max-height: none !important; }
+    }
 </style>
 <script id="tailwind-config">
         tailwind.config = {
@@ -207,10 +216,20 @@
 </div>
 <div class="flex flex-col gap-sm md:items-end">
 <span class="font-label-sm text-label-sm text-outline" id="report-id">REPORT ID: —</span>
-<a class="bg-primary text-on-primary font-label-md text-label-md px-lg py-md rounded-lg hover:opacity-90 transition-all flex items-center gap-sm shadow-lg shadow-primary/20" href="index.html">
+<a class="no-print bg-primary text-on-primary font-label-md text-label-md px-lg py-md rounded-lg hover:opacity-90 transition-all flex items-center gap-sm shadow-lg shadow-primary/20" href="index.html">
 <span class="material-symbols-outlined text-sm">refresh</span>
                         New Interview
                     </a>
+<div class="no-print flex gap-sm">
+<button class="bg-white border border-outline-variant/60 text-on-surface font-label-md text-label-md px-md py-sm rounded-lg hover:bg-surface-container-low transition-all flex items-center gap-sm" id="print-btn">
+<span class="material-symbols-outlined text-sm">print</span>
+                            Print / PDF
+                        </button>
+<button class="bg-white border border-outline-variant/60 text-on-surface font-label-md text-label-md px-md py-sm rounded-lg hover:bg-surface-container-low transition-all flex items-center gap-sm" id="share-btn">
+<span class="material-symbols-outlined text-sm">link</span>
+                            Copy link
+                        </button>
+</div>
 </div>
 </section>
 <!-- Main Content Area: Question List -->
@@ -379,6 +398,21 @@
             } else {
                 document.getElementById('audit-notes').textContent = 'No self-audit was recorded for this interview.';
             }
+
+            document.getElementById('print-btn').onclick = () => window.print();
+            document.getElementById('share-btn').onclick = async () => {
+                // Reports are persisted server-side, so this link works for anyone while the DB holds it.
+                const url = `${location.origin}/report.html?id=${entry.id}`;
+                const btn = document.getElementById('share-btn');
+                try {
+                    await navigator.clipboard.writeText(url);
+                    const old = btn.innerHTML;
+                    btn.innerHTML = '<span class="material-symbols-outlined text-sm">check</span> Copied';
+                    setTimeout(() => { btn.innerHTML = old; }, 1500);
+                } catch {
+                    prompt('Copy this link:', url);
+                }
+            };
         }
 
         function fail(msg) {

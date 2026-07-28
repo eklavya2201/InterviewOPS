@@ -1,5 +1,7 @@
 # InterviewOps 🎙️
 
+[![CI](https://github.com/eklavya2201/InterviewOPS/actions/workflows/ci.yml/badge.svg)](https://github.com/eklavya2201/InterviewOPS/actions/workflows/ci.yml)
+
 **An AI mock-interviewer that grades itself.** Practice a realistic technical screen for AI/ML/DS roles — then get two reports: one scoring *you*, and one where an LLM-as-judge audits the *interviewer's own performance* (follow-up quality, difficulty calibration, hallucinations).
 
 > Most AI interview tools stop at "ask questions." InterviewOps ships a built-in eval pipeline — the same discipline production AI teams use — so every interview doubles as a benchmark run.
@@ -47,6 +49,18 @@ Open **http://localhost:8000** — the full app (UI + API) runs on one port. It 
 
 Interactive API docs: http://localhost:8000/docs
 
+## Tests
+
+```bash
+cd backend
+pip install -r requirements-dev.txt
+pytest
+```
+
+The suite exercises the full API (session flow, grading, history, usage) against a throwaway
+SQLite database in forced demo mode — **zero API calls, zero cost**. GitHub Actions runs it on
+every push and PR (`.github/workflows/ci.yml`).
+
 ## Deploy (Render, free tier)
 
 The repo ships a `render.yaml` blueprint:
@@ -82,6 +96,9 @@ To showcase real AI interviews: Render dashboard → the service → **Environme
 - [x] Model benchmark table (Claude vs GPT vs Gemini as interviewer, scored by the meta-eval — see below)
 - [x] Cost dashboard (tokens + ₹ per interview at `/costs.html`, powered by per-call usage tracking)
 - [x] SQLite persistence for sessions and history (sessions survive restarts; `/api/history` backs the History page)
+- [x] Test suite + CI (pytest over the demo-mode API — free to run; GitHub Actions badge above)
+- [x] Score-trend chart on the History page (see your progress across interviews)
+- [x] Printable / shareable reports (Print-to-PDF button + copy-link — reports are served from the server DB)
 
 ## Model benchmark
 

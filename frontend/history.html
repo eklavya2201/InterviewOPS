@@ -199,6 +199,17 @@
 </div>
 </div>
 </div>
+<!-- Score Trend -->
+<div class="hidden bg-white rounded-xl border border-outline-variant/60 shadow-lg shadow-indigo-950/5 p-lg" id="trend-card">
+<div class="flex items-center justify-between flex-wrap gap-sm mb-md">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Score Trend</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Overall score, oldest → newest</span>
+</div>
+<div class="relative" id="trend-wrap">
+<svg class="block w-full" height="220" id="trend-svg"></svg>
+<div class="hidden absolute z-10 pointer-events-none bg-inverse-surface text-inverse-on-surface font-label-sm text-label-sm rounded-lg px-md py-sm shadow-lg whitespace-nowrap" id="trend-tip"></div>
+</div>
+</div>
 <!-- History Table Container -->
 <div class="bg-white rounded-xl border border-outline-variant/60 overflow-hidden shadow-lg shadow-indigo-950/5" id="history-container">
 <div class="overflow-x-auto">
@@ -484,6 +495,54 @@
             document.getElementById('stat-pass').textContent = Math.round(passes / hist.length * 100) + '%';
         }
         }
-        loadHistory().then(renderHistory);
+
+        // Single-series line chart: overall score over time. Hidden until 2+ interviews exist.
+        function renderTrend(hist) {
+            const pts = [...hist]
+                .sort((a, b) => new Date(a.date) - new Date(b.date))
+                .map(h => ({ date: new Date(h.date), score: h.report.overall_score, role: ROLE_LABELS[h.role] || h.role }));
+            if (pts.length < 2) return;
+            document.getElementById('trend-card').classList.remove('hidden');
+            const svg = document.getElementById('trend-svg');
+            const tip = document.getElementById('trend-tip');
+            const fmt = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+            function draw() {
+                const W = svg.clientWidth || 600, H = 220, top = 14, bottom = 28, left = 36, right = 16;
+                const x = i => left + i * (W - left - right) / (pts.length - 1);
+                const y = s => top + (1 - s / 100) * (H - top - bottom);
+                let out = '';
+                for (const g of [0, 50, 100]) {
+                    out += `<line x1="${left}" x2="${W - right}" y1="${y(g)}" y2="${y(g)}" stroke="#ddd5c9" stroke-width="1"/>`
+                         + `<text x="${left - 8}" y="${y(g) + 4}" text-anchor="end" font-family="IBM Plex Mono" font-size="11" fill="#57534e">${g}</text>`;
+                }
+                out += `<polyline points="${pts.map((p, i) => `${x(i)},${y(p.score)}`).join(' ')}" fill="none" stroke="#4338ca" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+                pts.forEach((p, i) => {
+                    out += `<circle cx="${x(i)}" cy="${y(p.score)}" r="4" fill="#4338ca" stroke="#ffffff" stroke-width="2"/>`
+                         + `<circle data-i="${i}" cx="${x(i)}" cy="${y(p.score)}" r="14" fill="transparent" style="cursor:pointer"/>`;
+                });
+                out += `<text x="${left}" y="${H - 8}" font-family="IBM Plex Mono" font-size="11" fill="#57534e">${fmt(pts[0].date)}</text>`
+                     + `<text x="${W - right}" y="${H - 8}" text-anchor="end" font-family="IBM Plex Mono" font-size="11" fill="#57534e">${fmt(pts[pts.length - 1].date)}</text>`;
+                svg.innerHTML = out;
+                svg.querySelectorAll('circle[data-i]').forEach(c => {
+                    c.addEventListener('mouseenter', () => {
+                        const p = pts[+c.dataset.i];
+                        tip.innerHTML = `<div class="font-bold">${p.score} / 100</div><div>${esc(p.role)} · ${fmt(p.date)}</div>`;
+                        tip.classList.remove('hidden');
+                        const cx = +c.getAttribute('cx'), cy = +c.getAttribute('cy');
+                        tip.style.left = Math.min(Math.max(cx - tip.offsetWidth / 2, 0), W - tip.offsetWidth) + 'px';
+                        tip.style.top = Math.max(cy - tip.offsetHeight - 14, 0) + 'px';
+                    });
+                    c.addEventListener('mouseleave', () => tip.classList.add('hidden'));
+                });
+            }
+            draw();
+            addEventListener('resize', draw);
+        }
+
+        loadHistory().then(hist => {
+            renderHistory(hist);
+            renderTrend(hist);
+        });
     </script>
 </body></html>
